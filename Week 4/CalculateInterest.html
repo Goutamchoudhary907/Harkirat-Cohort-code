@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script>
+        let timeout;
+        function debounceDiv(){
+            clearTimeout(timeout)
+            timeout=setTimeout(() => {
+              interest()  
+            }, 1000);
+        }
+        function interest(){
+            const a= document.getElementById('principle').value;   
+            const b= document.getElementById('rate').value;
+            const c= document.getElementById('time').value ;
+            
+            const interest= (a*b*(c*12))/100
+            document.getElementById('interest').innerHTML=interest;
+        }
+    </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input oninput="debounceDiv()" id="principle" type="text" placeholder="Principal"></input> <br><br>
+    <input oninput="debounceDiv()" id="rate" type="text" placeholder="Rate"></input><br><br>
+    <input oninput="debounceDiv()" id="time" type="text" placeholder="Time"></input><br><br>
+    
+    <!-- <button onclick="interest()">Submit</button> -->
+    <div id="interest"></div>
+</body>
+</html>

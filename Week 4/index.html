@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <script>
+
+// delay the call to populateDiv3 unitll ive not been called for 1000ms
+// and I've been called atleast once
+    let timeout; 
+    function debounceDiv(){
+        clearTimeout(timeout);
+       timeout= setTimeout(function(){
+        populateDiv3()
+       },1000); 
+    }
+
+        function populateDiv(){        
+        // const element =document.getElementById("finalSum")
+        // element.innerHTML=parseInt(a) + parseInt(b) 
+        fetch("https://sum-server.100xdevs.com/sum?a="+a+"&b="+b)
+        // link is expired so not working 
+        .then(function(response){
+            response.text(). then(function(ans){
+                document.getElementById("finalSum").innerHTML=ans
+            })
+        })
+
+        // axios
+        // axios.get("https://sum-server.100xdevs.com/sum?a="+a+"&b="+b)
+        // .then(function(response){
+        //     response.data;
+        // })
+        }
+
+        async function populateDiv2() {
+        const a= document.getElementById('FirstNumber').value;   
+        const b= document.getElementById('secondNumber').value; 
+        const response=await fetch("https://sum-server.100xdevs.com/sum?a="+a+"&b="+b)
+        const ans=await response.text();
+        document.getElementById("finalSum").innerHTML=ans
+        }
+
+        function populateDiv3(){
+        const a= document.getElementById('FirstNumber').value;   
+        const b= document.getElementById('secondNumber').value;
+        const element =document.getElementById("finalSum")
+        element.innerHTML=parseInt(a) + parseInt(b) 
+        }
+    </script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input oninput="debounceDiv()" id="FirstNumber" type="text" placeholder="First number"> </input> <br><br>
+    <input oninput="debounceDiv()" id="secondNumber" type="text" placeholder="Second number"> </input><br><br>
+    <!-- <button onclick="debounceDiv()">Calculate sum</button> -->
+
+    <div id="finalSum"></div>
+</body>
+</html>
