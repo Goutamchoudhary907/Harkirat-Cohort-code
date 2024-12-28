@@ -11,14 +11,14 @@ const app=express();
 
 const schema=zod.object({
     email: zod.string(),
-    password:z.string(),
-    country: z.literal("IN").or(z.listen("US"),)
+    password:zod.string(),
+    country: zod.literal("IN").or(zod.literal("US"),) ,
+    kidneys:zod.array(zod.number())
 })
 app.use(express.json())
 
 app.post("/health-checkup", function(req,res){
-    const kidneys=req.body.kidneys;
-    const response=schema.safeParse(kidneys);
+    const response=schema.safeParse(req.body);
     if(!response.success){
         res.status(411).json({
             msg:"Input is invalid"
