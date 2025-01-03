@@ -3,27 +3,30 @@ const router=express.Router();
 const zod=require("zod")
 const {User,Account}=require('../db')
 const jwt=require("jsonwebtoken")
-const {JWT_SECRET} =require("./config");
+const {JWT_SECRET} =require("../config");
 const { authMiddleware } = require("../middleware");
 
-const signupSchema=Zod.object({
-    username:Zod.string().email(),
-    password:Zod.string(),
-    firstName:Zod.string(),
-    lastName:Zod.string(),
+const signupSchema=zod.object({
+    username:zod.string().email(),
+    password:zod.string(),
+    firstName:zod.string(),
+    lastName:zod.string(),
     
 })
 
 router.post("/signup" ,async (req,res) => {
-    const {sucess}=signupSchema.safeParse(req.body);
-    if(!sucess){
+    console.log("Req body", req.body);
+    
+    const {success}=signupSchema.safeParse(req.body);
+    if(!success){
         return res.status(411).json({
             message:"Email already taken / Incorrect inputs"
         })
     }
-    const existingUser=User.findOne({
-        username:body.username
-    })
+   try{
+    const existingUser=await User.findOne({
+        username:req.body.username
+    })  
     if(existingUser){
         return res.status(411).json({
             message:"Email already taken / Incorrect inputs"
@@ -36,7 +39,7 @@ router.post("/signup" ,async (req,res) => {
         firstName:req.body.firstName,
         lastName:req.body.lastName
     });
-    const userId=User._id;
+    const userId=dbuser._id;
     await Account.create({
         userId,
         balance:1+Math.random() * 1000
@@ -49,8 +52,15 @@ router.post("/signup" ,async (req,res) => {
     res.json({
         message:"User created successfully",
         token:token
-    })
-})
+    })   
+}catch(err){
+    console.error('Error during signup:', err);
+    res.status(500).json({
+        message: 'Internal server error',
+        error: err.message
+    });
+}
+});
   
  const signinBody=zod.object({
     username:zod.string().email(),
@@ -64,7 +74,7 @@ router.post("/signup" ,async (req,res) => {
         })
     }
 
-    const user=await user.findOne({
+    const user=await User.findOne({
         username:req.body.username,
         password:req.body.password
     });
