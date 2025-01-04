@@ -1,0 +1,8 @@
+import { useSearchParams } from "react-router-dom"
+
+export const SendMoney = () => {
+ const [searchParams]=useSearchParams();
+ const id=searchParams.get("id");
+ const name=searchParams.get("name");
+ const [amount,setAmount]=useState(0);
+}
