@@ -8,6 +8,8 @@ export default function Dashboard(){
     const navigate=useNavigate();
     const [balance,setBalance]=useState(0);
     const [user,setUser]=useState("");
+    const [userId, setUserId] = useState("");
+
 
     useEffect(()=>{
         async function func(){
@@ -26,6 +28,8 @@ export default function Dashboard(){
          
                 setBalance(response.data.balance);
                 setUser(response.data.firstName);
+                setUserId(response.data.userId); // Assuming the response contains the userId
+   
              } catch (error) {
                 console.error("Error fetching balance and user:", error);
              }
@@ -55,7 +59,7 @@ export default function Dashboard(){
           <Balance value={balance.toFixed(2)} />
         </div>
         <div className="mt-8">
-          <Users />
+          <Users currentUserId={userId}/>
         </div>
       </div>
     </div>

@@ -1,12 +1,39 @@
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { useState } from "react";
 import axios from "axios";
+import Button from '../components/Button'
 export const SendMoney = () => {
- const [searchParams]=useSearchParams();
- const id=searchParams.get("id");
- const name=searchParams.get("name");
- const [amount,setAmount]=useState(0);
- const [message,setMessage]=useState("")
+       const [searchParams]=useSearchParams();
+       const id=searchParams.get("id");
+       const name=searchParams.get("name");
+       const [amount,setAmount]=useState(0);
+       const [message,setMessage]=useState("")
+       const navigate=useNavigate();
+
+    const handleTransfer= async () =>{
+        if(!amount || isNaN(amount) || amount <=0){
+            setMessage("please enter a valid amount")
+            return;
+        }
+         if(!id){
+            setMessage("Please enter a recipient");
+            return;
+         }
+         try {
+         const response= await axios.post("http://localhost:3000/api/v1/account/transfer" ,{
+                to:id,
+                amount
+            } ,{
+                headers:{
+                    Authorization:"Bearer "+ localStorage.getItem("token")
+                }
+            })
+                setMessage("Transfer Successful !")
+         } catch (error) {
+            console.error('Error during transfer:', error);
+            setMessage('Transfer failed. Please try again.');
+         }
+    }
 
  return <div className="flex justify-center h-screen bg-gray-100">
     <div className="h-full flex flex-col justify-center">
@@ -16,8 +43,8 @@ export const SendMoney = () => {
             </div>
             <div className="p-6">
                 <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 rounded-full bg-green-500 flex items-center">
-                        <span className="text-2xl text-white">
+                    <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+                        <span className="text-2xl text-white ">
                             {name[0].toUpperCase()}
                         </span>
                     </div>
@@ -32,21 +59,8 @@ export const SendMoney = () => {
                         }} type="number" className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                         id="amount" placeholder="Enter amount"/>
                     </div>
-                    <button onClick={() =>{
-                        axios.post("http://localhost:3000/api/v1/account/transfer" ,{
-                            to:id,
-                            amount
-                        } ,{
-                            headers:{
-                                Authorization:"Bearer "+ localStorage.getItem("token")
-                            }
-                        }).then(response =>{
-                            setMessage("Transfer Successful !")
-                        }).catch(error =>{
-                            console.error('Error during transfer:', error);
-                            setMessage('Transfer failed. Please try again.');
-                        })
-                    }} className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">
+                    <button onClick={handleTransfer}
+                     className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white">
                         Initiate Transfer
                     </button>
                     {message && (
@@ -54,6 +68,11 @@ export const SendMoney = () => {
               {message}
             </div>
           )}
+                <div className="pt-10">
+                <Button onClick={(e) => {
+                navigate("/dashboard");
+            }} label={"Back to Dashboard"}/>
+                </div>
                 </div>
             </div>
         </div>

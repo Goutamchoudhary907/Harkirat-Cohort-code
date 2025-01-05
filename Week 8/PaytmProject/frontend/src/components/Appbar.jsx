@@ -1,7 +1,7 @@
 import Button from './Button'
 
 export const Appbar= ({onClick,label,user}) =>{
- return <div className="shadow h-14 fle justify-between"> 
+ return <div className="shadow h-14 flex justify-between"> 
   <div className="flex flex-col justify-center h-full ml-4">
      payTM App
   </div>

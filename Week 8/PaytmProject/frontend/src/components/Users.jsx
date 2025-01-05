@@ -80,7 +80,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
-export const Users = () => {
+export const Users = ({currentUserId}) => {
     // Replace with backend call
     const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState("");
@@ -94,15 +94,15 @@ export const Users = () => {
                       },
                 })
                 console.log(response.data);
-                
-                    setUsers(response.data.user ||[])
+                const filteredUsers=response.data.user.filter(user => user._id !== currentUserId)
+                setUsers(filteredUsers ||[])
             }catch(error){
                 console.error("Error fetching users:", error);
                 setUsers([]);
             }
         }
      fetchUsers()
-    }, [filter])
+    }, [filter,currentUserId])
 
     return <>
         <div className="font-bold mt-6 text-lg">
