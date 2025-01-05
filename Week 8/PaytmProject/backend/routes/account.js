@@ -1,15 +1,22 @@
 const express=require("express");
 const { authMiddleware } = require("../middleware");
-const { Account } = require("../db");
+const { Account,User } = require("../db");
 const { default: mongoose } = require("mongoose");
 
 const router=express.Router();
 router.get("/balance" , authMiddleware, async(req,res) =>{
+    const user=await User.findOne({_id:req.userId})
     const account=await Account.findOne({
      userId:req.userId
     });
+    if (!account) {
+        return res.status(404).json({
+            message: 'Account not found'
+        });
+    }
     res.json({
-        balance:account.balance
+        balance:account.balance ,
+        firstName:user.firstName
     })
 });
 
@@ -49,3 +56,8 @@ router.post("/transfer", authMiddleware,async (req,res) =>{
 });
 
 module.exports=router;
+
+
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzc4YTgxZjZiZmE2NmJkYjQxYzQ1NTYiLCJpYXQiOjE3MzU5NjA2MDd9.4BROoTkD0rZrPO6DuORFm0-hMZ6xhSjczHr9lNQNJhw       goutam123
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzc4YTg0ZDZiZmE2NmJkYjQxYzQ1NWIiLCJpYXQiOjE3MzU5NjA2NTN9.e08wFJuSayyvKoLOrUZvKSUzoyvdMldPlJJyBEcyJG0       ran987
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Nzc4YTg3ZTZiZmE2NmJkYjQxYzQ1NjAiLCJpYXQiOjE3MzU5NjA3MDJ9.E3R5_ikIGbjOAEtVjKkOOEuuUIHeVrB034ZOPo_mKAw       harkirat11

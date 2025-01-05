@@ -114,28 +114,42 @@ router.post("/signup" ,async (req,res) => {
     })
  })
   
-  router.get("/bulk" , async (req,res) =>{
-    const filter=req.query.filter || "";
+  router.get("/bulk" ,authMiddleware, async (req,res) =>{
+    try{
+        const filter=req.query.filter || "";
 
-    const users=await User.find({
-        $or: [{
-            firstName:{
-                "$regex" :filter
-            }
-        },{
-            lastName:{
-                "$regex":filter
-            }
-        }]
-    })
-    res.json({
-        user:users.map(user =>({
-            username:user.username,
-            firstName:user.firstName,
-            lastName:user.lastName ,
-            _id:user._id
-        }))
-    })
+        const users=await User.find({
+            $or: [
+                { firstName: { $regex: filter, $options: 'i' } },
+                { lastName: { $regex: filter, $options: 'i' } },
+                { username: { $regex: filter, $options: 'i' } }
+              ]
+        })
+        res.json({
+            user:users.map(user =>({
+                username:user.username,
+                firstName:user.firstName,
+                lastName:user.lastName ,
+                _id:user._id
+            }))
+        })
+    }catch(error){
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+ 
+    }
+   
+  })
+
+  router.get('/signout', authMiddleware,async(req,res) =>{
+    try{
+         res.json({
+            loggedOut:req.userId ,
+            msg:"Logged out successfully"
+        })
+    }catch(error){
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+   
   })
 
 

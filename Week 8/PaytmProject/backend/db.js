@@ -1,7 +1,12 @@
 const mongoose=require('mongoose');
+main().catch(err => console.log(err))
+ async function main(){
 
-mongoose.connect("mongodb+srv://goutamchoudhary:Goutam907688@cluster0.6gf0e.mongodb.net/PaytmProject")
-const userSchema= new mongoose.Schema({
+    mongoose.connect("mongodb+srv://goutamchoudhary:Goutam907688@cluster0.6gf0e.mongodb.net/PaytmProject")
+    console.log("Connected to db");
+    
+ }
+ const userSchema= new mongoose.Schema({
     username:{
         type:String,
         required:true,
