@@ -16,7 +16,8 @@ router.get("/balance" , authMiddleware, async(req,res) =>{
     }
     res.json({
         balance:account.balance ,
-        firstName:user.firstName
+        firstName:user.firstName,
+        userId:user._id
     })
 });
 
