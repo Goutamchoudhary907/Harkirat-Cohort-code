@@ -19,8 +19,8 @@ router.post("/signup" ,async (req,res) => {
     
     const {success}=signupSchema.safeParse(req.body);
     if(!success){
-        return res.status(411).json({
-            message:"Email already taken / Incorrect inputs"
+        return res.status(400).json({
+            message:"Incorrect inputs"
         })
     }
    try{
@@ -29,7 +29,7 @@ router.post("/signup" ,async (req,res) => {
     })  
     if(existingUser){
         return res.status(411).json({
-            message:"Email already taken / Incorrect inputs"
+            message:"Email already taken"
         })
     }
 
