@@ -28,7 +28,7 @@ export default function Dashboard(){
          
                 setBalance(response.data.balance);
                 setUser(response.data.firstName);
-                setUserId(response.data.userId); // Assuming the response contains the userId
+                setUserId(response.data.userId); 
    
              } catch (error) {
                 console.error("Error fetching balance and user:", error);
