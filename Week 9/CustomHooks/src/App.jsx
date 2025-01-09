@@ -5,6 +5,7 @@ import { useIsOnline } from './hooks/useIsOnline';
 import { useMousePoiner } from './hooks/useMousePointer';
 import { useDimensions } from './hooks/useDimensions';
 import { useInterval } from './hooks/useInterval';
+import { useDebounce } from './hooks/useDebounce';
 
 function useTodos(n){
   const [todos, setTodos] = useState([])
@@ -48,6 +49,7 @@ const {todos,loading }=useTodos(5 );
     <MousePointer/><br />
     <Dimensions/><br />
     <Interval/><br />
+    <Debounce/>
     </>
   )
 }
@@ -93,6 +95,17 @@ return (
   Timer is at {count}
   </>
 )
+}
+
+function Debounce(){
+  const [value,setValue]=useState(0);
+  const debouceValue=useDebounce(value,500);
+  return (
+    <>
+    Debounced value is {debouceValue}
+    <input type="text" onChange={e => setValue(e.target.value)} />
+    </>
+  )
 }
 
 export default App
