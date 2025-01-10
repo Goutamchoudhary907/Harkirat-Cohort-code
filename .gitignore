@@ -1,0 +1,13 @@
+# Ignore all dist folders
+**/dist
+
+# Ignore all package.json files
+**/package.json
+**/package-lock.json
+
+# Ignore all ts config files
+**/tsconfig.json
+**/tsconfig.tsbuildinfo
+
+# Ignore all node modules
+**/node_modules
