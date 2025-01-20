@@ -25,7 +25,7 @@ async function insertUserData(username:string,password:string, email:string){
         VALUES ('${username}' , '${password}' , '${email}');
         `)
 }
-insertUserData("harkirat", "123", "harki1@gmail.com")
+// insertUserData("harkirat", "123", "harki1@gmail.com")
 
 
 async function insertUserData2(username:string,password:string, email:string){
@@ -33,5 +33,7 @@ async function insertUserData2(username:string,password:string, email:string){
     const result=client.query(`
         INSERT INTO users (username,password,email) 
         VALUES ($1,$2,$3);
-        `,[])
+        `,[username,password,email])
+        console.log(result);
 }
+// insertUserData2("nick", "1234", "nick123@gmail.com" )
