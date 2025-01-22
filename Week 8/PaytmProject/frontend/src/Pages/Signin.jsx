@@ -45,6 +45,7 @@ export const Signin = () => {
             });
             if(response.status ===200){
                 console.log('Sign-in successful:', response.data);
+                localStorage.setItem("token", response.data.token);
                 navigate('/dashboard');
             }
         } catch (error) {

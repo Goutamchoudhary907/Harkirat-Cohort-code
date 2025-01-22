@@ -67,10 +67,10 @@ router.post("/signup" ,async (req,res) => {
     password:zod.string()
  })
  router.post("/signin", async(req,res) =>{
-    const {success}=signinBody.safeParse(req.body);
-    if(!success){
-        return res.status(411).json({
-            message:"Email already taken/Incorrect inputs"
+    const validation=signinBody.safeParse(req.body);
+    if(!validation.success){
+        return res.status(400).json({
+            message:"Incorrect inputs"
         })
     }
 
