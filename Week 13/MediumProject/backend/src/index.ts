@@ -10,12 +10,19 @@ const app = new Hono<{
     JWT_SECRET:string
   }
 }>();
-app.use('/*', cors())
+app.use('/*',cors({
+  origin: ['http://localhost:5173'], 
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+  allowHeaders: ['Content-Type', 'Authorization'],
+  exposeHeaders:['content-length'],
+  maxAge:600,
+  credentials:true
+}))
 app.route("/api/v1/user", userRouter);
 app.route("/api/v1/blog", blogRouter);
 
 // Middleware
-app.use('/api/v1/blog/*', async (c,next) =>{
+app.use('/api/v1/*', async (c,next) =>{
   const header=c.req.header("Authorization") || "";
 
   const response=await verify(header, c.env.JWT_SECRET)
