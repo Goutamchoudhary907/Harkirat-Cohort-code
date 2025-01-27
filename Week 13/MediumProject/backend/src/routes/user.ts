@@ -76,7 +76,7 @@ userRouter.post('/signup', async (c) => {
      const token=await sign({
       id:user.id
     },c.env.JWT_SECRET);
-    localStorage.setItem("token",token)  
+    // localStorage.setItem("token",token)  
     return c.text(token) 
    } catch (error) {
     c.status(411);
