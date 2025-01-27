@@ -17,16 +17,23 @@ export const Auth = ({ type }: { type: "signup" | "signin" }) => {
         console.log(axios.defaults.headers.common); 
         console.log(postInputs);
         
-        const response=await axios.post(`${BACKEND_URL}/api/v1/user/${type ==='signup' ? "signup":"signin"}`, postInputs, 
-          { 
-            headers: { 
-              'Content-Type': 'application/json' 
-            } 
-          });
+        const response=await axios.post(`${BACKEND_URL}/api/v1/user/${type ==='signup' ? "signup":"signin"}`, postInputs)
 
-        const token=response.data;
-        localStorage.setItem("token",token)
-        navigate("/blogs"); 
+        if (type === "signup") {
+          const jwt = response.data;
+          localStorage.setItem("token", jwt);
+          localStorage.setItem("userName", postInputs.email);
+          alert("Signup successful. Please sign in.");
+          navigate("/signin");
+      } else {
+          const jwt = response.data;
+          localStorage.setItem("token", jwt);
+          localStorage.setItem("userName", postInputs.email);
+          navigate("/blogs");
+      }
+        // const token=response.data;
+        // localStorage.setItem("token",token)
+        // navigate("/blogs"); 
       }catch (e) {
         console.log("Invalid inputs");
         
