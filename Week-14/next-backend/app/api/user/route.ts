@@ -1,10 +1,9 @@
 //  /api/user is the route 
 
 import { NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import { log } from "console";
-const client=new PrismaClient();
+import client from '@/db'
 
+// Post method as it is a post method
 export async function POST(req:NextRequest){
     const body=await req.json();
    console.log(body);
