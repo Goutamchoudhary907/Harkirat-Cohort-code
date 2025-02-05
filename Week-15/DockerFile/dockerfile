@@ -1,0 +1,25 @@
+# Base image
+FROM node:18
+
+# Working directory
+WORKDIR /app
+
+# Copy files that can't change generally i.e dependencies
+COPY package* .
+COPY /prisma .
+
+
+# Run commands to build the code
+RUN npm install
+RUN npx prisma generate
+
+#Copy all files
+COPY . .
+
+RUN npm run build
+
+# Expose port
+EXPOSE 3000
+
+# Final command that run when running the container
+CMD ["node","dist/index.js"]
